@@ -17,6 +17,7 @@ public class Main extends PApplet implements IObserver{
 		PApplet.main("view.Main");
 	}
 		
+	//prueba terminal
 	
 	@Override
 	public void settings() {
