@@ -51,14 +51,14 @@ public class HardEnemy {
 	
 	public void createBullet() {
 		if (app.frameCount%300 == 0) {
-			Bullet bullet = new Bullet(app, x, y);
+			Bullet bullet = new Bullet(x, y);
 			bullets.add(bullet);
 		}
 	}
 
 	public void shoot() {
 		for (int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).draw();
+			bullets.get(i).draw(app);
 			bullets.get(i).moveEnemyBullet();
 		}
 	}

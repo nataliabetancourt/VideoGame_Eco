@@ -2,29 +2,46 @@ package view;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 import model.BasicEnemy;
 import model.HardEnemy;
+import model.Player;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
 import processing.core.PImage;
 
-public class PlayScreen {
+public class PlayScreen implements IObserver {
 
+	private TCPLauncher tcp;
 	private PApplet app;	 
-	private PImage background;
+	private PImage background, player1Img, player2Img;
 	private PFont font;
 	private int scorePlayer1, scorePlayer2, minutes, seconds;
 	private int timeCounter;
 	private ArrayList<BasicEnemy> basicEnemies1, basicEnemies2;
 	private ArrayList<HardEnemy> hardEnemies1, hardEnemies2;
+	private Player player1, player2;
+	private Gson gson;
 	
 	public PlayScreen (PApplet app) {
 		this.app = app;
 		
+		//Comunicacion
+		tcp = TCPLauncher.getInstance();
+		tcp.setObserver(this);
+		gson = new Gson();
+		
+		//Players
+		player1 = new Player(206, 650, "no movement");
+		player2 = new Player(973, 650, "no movement");
+		
 		//Elementos graficos
 		background = app.loadImage("./data/Pantalla de juego-1.png");
 		font = app.createFont("./data/Poppins-Bold.ttf", 24);
+		player1Img = app.loadImage("./data/player1.png");
+		player2Img = app.loadImage("./data/player2.png");
 		
 		//Lists
 		basicEnemies1 = new ArrayList<>();
@@ -50,6 +67,9 @@ public class PlayScreen {
 		drawBasicEnemies();
 		drawHardEnemies();
 		deleteEnemies();
+		
+		//Players
+		players();
 
 	}
 	
@@ -94,13 +114,13 @@ public class PlayScreen {
 		app.frameRate(80);
 		
 		//Agregar enemigos basicos
-		if (app.frameCount%120 == 0) {
+		if (app.frameCount%120 == 0 && basicEnemies1.size() < 4) {
 			basicEnemies1.add(new BasicEnemy(app, xTemp1, yTemp));
 			basicEnemies2.add(new BasicEnemy(app, xTemp2, yTemp));
 		}
 		
 		//Agregar enemigos que disparan		
-		if (app.frameCount%250 == 0) {
+		if (app.frameCount%250 == 0 && hardEnemies1.size() == 0) {
 			hardEnemies1.add(new HardEnemy(app, xTemp1, yTemp));
 			hardEnemies2.add(new HardEnemy(app, xTemp2, yTemp));
 		}
@@ -156,4 +176,50 @@ public class PlayScreen {
 			}
 		}
 	}
+	
+	private void players() {
+		//For player 1
+		app.imageMode(PConstants.CENTER);
+		app.image(player1Img, player1.getX(), player1.getY(), player1.getWidth(), player1.getHeight());
+		player1.coolDown();
+		player1.eliminateBullet();
+		
+		//Paint player1 bullets
+		for (int i = 0; i < player1.getBullets().size(); i++) {
+			player1.getBullets().get(i).draw(app);
+			player1.getBullets().get(i).moveBullet();
+		}
+
+		
+		//For player 2
+		app.imageMode(PConstants.CENTER);
+		app.image(player2Img, player2.getX(), player2.getY(), player2.getWidth(), player2.getHeight());
+		player2.coolDown();
+		player2.eliminateBullet();
+		
+		//Paint player2 bullets
+		for (int i = 0; i < player2.getBullets().size(); i++) {
+			player2.getBullets().get(i).draw(app);
+			player2.getBullets().get(i).moveBullet();
+		}
+
+	}
+	
+	@Override
+	public void notifyMessage(Session session, String message) {
+		if (session.getID().equals("player0")) {
+			
+			Player basePlayer = gson.fromJson(message, Player.class);
+			player1.setAction(basePlayer.getAction());
+			player1.move();
+			
+		} else if (session.getID().equals("player1")) {
+			
+			Player basePlayer = gson.fromJson(message, Player.class);
+			player2.setAction(basePlayer.getAction());
+			player2.move();
+
+		}
+	}
 }
+

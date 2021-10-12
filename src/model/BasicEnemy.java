@@ -17,7 +17,7 @@ public class BasicEnemy {
 		this.app = app;
 		this.x = x;
 		this.y = y;
-		this.speed = 3;
+		this.speed = 1;
 		this.width = 56;
 		this.height = 60;
 		this.visible = true;

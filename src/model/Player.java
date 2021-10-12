@@ -8,54 +8,52 @@ import processing.core.PImage;
 
 public class Player {
 	
-	private PApplet app;
-	private PImage player, bullet;
 	private int x, y, width, height;
+	private String action;
 	private int coolDown, speed;
 	private ArrayList<Bullet> bullets;
 	
-	public Player (PApplet app) {
-		this.app = app;
-		this.x = 600;
-		this.y = 570;
+	public Player (int x, int y, String action) {
+		this.x = x;
+		this.y = y;
 		this.speed = 30;
 		this.coolDown = 0;
-		this.width = 70;
-		this.height = 130;
-		
-		//Imagenes
-		player = app.loadImage("./data/Spaceship.png");
-		bullet = app.loadImage("./data/Bullet.png");
+		this.width = 55;
+		this.height = 115;
+		this.action = action;
 		
 		//array
 		bullets = new ArrayList <>();
-		
 	}
 	
-	public void draw() {
-		app.imageMode(PConstants.CENTER);
-		app.image(player, x, y, width, height);
-		
-		//CoolDown 
+	public void move() {
+		switch (action) {
+		case "left":
+			x-=speed;
+			break;
+		case "right":
+			x+=speed;
+			break;
+		case "shoot":
+			createBullet();
+			break;
+		case "no movement":
+			break;
+		}
+	}
+	
+	public void coolDown() {
 		if (coolDown > 0) {
 			coolDown--;
-		}	
-		
-	}
-	
-	public void createBullet() {
-		if (coolDown == 0) {
-			Bullet bullet = new Bullet(app, x, y);
-			bullets.add(bullet);
 			coolDown = 10;
 		}
-		
 	}
 	
-	public void shoot() {
-		for (int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).draw();
-			bullets.get(i).moveBullet();
+	private void createBullet() {
+		if (coolDown == 0) {
+			Bullet bullet = new Bullet(x, y);
+			bullets.add(bullet);
+			coolDown = 10;
 		}
 	}
 	
@@ -66,6 +64,33 @@ public class Player {
 			}
 		}
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+    public String getAction() {
+        return action;
+    }
 
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public int getWidth() {
+		return width;
+	}
+    
+    public int getHeight() {
+		return height;
+	}
+    
+    public ArrayList<Bullet> getBullets() {
+		return bullets;
+	}
 
 }

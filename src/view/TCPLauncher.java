@@ -39,7 +39,7 @@ public class TCPLauncher extends Thread{
 				System.out.println("Esperando clientes");
 				Socket socket = server.accept(); 
 				
-				Session session = new Session(socket, observer, "player" + sessions.size()+1);
+				Session session = new Session(socket, observer, "player" + sessions.size());
 				sessions.add(session);
 				session.start();
 				System.out.println("Cliente conectado");

@@ -6,19 +6,17 @@ import processing.core.PImage;
 
 public class Bullet {
 	
-	private PApplet app;
 	private int x, y, speed;
 	private boolean visible;
 
-	public Bullet (PApplet app, int x, int y) {
-		this.app = app;
+	public Bullet (int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.speed = 2;
 		this.visible = true;
 	}
 	
-	public void draw() {
+	public void draw(PApplet app) {
 		if (visible == true) {
 			app.fill (255);
 			app.ellipse (x, y, 20, 20);
