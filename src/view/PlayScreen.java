@@ -188,6 +188,7 @@ public class PlayScreen implements IObserver {
 		for (int i = 0; i < player1.getBullets().size(); i++) {
 			player1.getBullets().get(i).draw(app);
 			player1.getBullets().get(i).moveBullet();
+			System.out.println(player1.getBullets().size());
 		}
 
 		

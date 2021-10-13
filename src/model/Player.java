@@ -36,6 +36,7 @@ public class Player {
 			break;
 		case "shoot":
 			createBullet();
+			System.out.println("disparo");
 			break;
 		case "no movement":
 			break;
@@ -45,7 +46,6 @@ public class Player {
 	public void coolDown() {
 		if (coolDown > 0) {
 			coolDown--;
-			coolDown = 10;
 		}
 	}
 	
@@ -53,7 +53,7 @@ public class Player {
 		if (coolDown == 0) {
 			Bullet bullet = new Bullet(x, y);
 			bullets.add(bullet);
-			coolDown = 10;
+			coolDown = 20;
 		}
 	}
 	
