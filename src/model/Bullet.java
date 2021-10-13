@@ -12,7 +12,7 @@ public class Bullet {
 	public Bullet (int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.speed = 2;
+		this.speed = 3;
 		this.visible = true;
 	}
 	
