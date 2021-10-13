@@ -16,8 +16,7 @@ public class Main extends PApplet implements IObserver{
 	public static void main(String[] args) {
 		PApplet.main("view.Main");
 	}
-		
-	//prueba terminal
+
 	
 	@Override
 	public void settings() {
@@ -27,6 +26,7 @@ public class Main extends PApplet implements IObserver{
 	
 	@Override
 	public void setup() {
+		
 		//Classes
 		tcp = TCPLauncher.getInstance();
 		tcp.setObserver(this);
