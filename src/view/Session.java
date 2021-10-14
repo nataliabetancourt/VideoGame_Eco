@@ -66,6 +66,7 @@ public class Session extends Thread{
 			try {
 				bw.write(message + "\n");
 				bw.flush();
+				System.out.println("enviando mensaje");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

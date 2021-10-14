@@ -74,7 +74,7 @@ public class PlayScreen implements IObserver {
 		//Players
 		players();
 		impactPlayers();
-		scoreMessage();
+		//scoreMessage();
 
 		if (vulnerable > 0) {
 			vulnerable--;
@@ -110,7 +110,6 @@ public class PlayScreen implements IObserver {
 		app.textFont(font);
 		app.text(scorePlayer1, 435, 47);
 		app.text(scorePlayer2, 744, 47);
-
 	}
 	
 	private void createEnemies() {
@@ -161,32 +160,31 @@ public class PlayScreen implements IObserver {
 	}
 	
 	private void impactHardEnemies() {
+		//cuando el enemigo le dispara al player
 		for (int i = 0; i < hardEnemies1.size(); i++) {
-			
-			//cuando el enemigo le dispara al player
-			for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
-			
-				double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(i).getY(), 
-						player1.getY(), hardEnemies1.get(i).getBullets().get(i).getY());
+			if (hardEnemies1.get(i).getBullets().size() > 0) {
+				for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
 				
-				if (distance < 120 && hardEnemies1.get(i).getBullets().get(i).isVisible()) {
+					double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(j).getY(), 
+							player1.getY(), hardEnemies1.get(i).getBullets().get(j).getY());
 					
-					if (vulnerable == 0) {
-						//puede restar score
-						//resta del score del player
-						scorePlayer1 += hardEnemies1.get(i).getPoints();
-						//scorePlayer2 += hardEnemies2.get(i).getPoints();
-						//o puede solo hacer gameover
-						//gameover = true;
-						vulnerable = 60;
+					if (distance < 120 && hardEnemies1.get(i).getBullets().get(j).isVisible()) {
+						if (vulnerable == 0) {
+							scorePlayer1 -= hardEnemies1.get(i).getPoints();
+							vulnerable = 60;	
+							
+						}
 						
-					}
+					hardEnemies1.get(i).getBullets().get(j).setVisible(false);
+					//Enviar mensaje de score
+					tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
 					
-				hardEnemies1.get(i).getBullets().get(i).setVisible(false);
-				
+					}
 				}
 			}
 		}
+
+
 	}
 	
 	private void impactPlayers() {
@@ -198,6 +196,8 @@ public class PlayScreen implements IObserver {
 					scorePlayer1 += basicEnemies1.get(i).getPoints();
 					basicEnemies1.get(i).setVisible(false);
 					player1.getBullets().get(i).setVisible(false);
+					//Enviar mensaje de score
+					tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
 				}
 			}
 			
@@ -208,6 +208,8 @@ public class PlayScreen implements IObserver {
 					scorePlayer1 += hardEnemies1.get(i).getPoints();
 					hardEnemies1.get(i).setVisible(false);
 					player1.getBullets().get(i).setVisible(false);
+					//Enviar mensaje de score
+					tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
 				}
 			}
 		}
@@ -220,6 +222,8 @@ public class PlayScreen implements IObserver {
 					scorePlayer2 += basicEnemies2.get(i).getPoints();
 					basicEnemies2.get(i).setVisible(false);
 					player2.getBullets().get(i).setVisible(false);
+					//Enviar mensaje de score
+					tcp.getSessions().get(0).sendMessage(" " + scorePlayer2);
 				}
 			}
 			
@@ -230,14 +234,16 @@ public class PlayScreen implements IObserver {
 					scorePlayer2 += hardEnemies2.get(i).getPoints();
 					hardEnemies2.get(i).setVisible(false);
 					player2.getBullets().get(i).setVisible(false);
+					//Enviar mensaje de score
+					tcp.getSessions().get(0).sendMessage(" " + scorePlayer2);
 				}
 			}
 		}
 	}
 	
 	private void scoreMessage() {
-		tcp.getSessions().get(0).sendMessage("" + scorePlayer1);
-		tcp.getSessions().get(1).sendMessage("" + scorePlayer2);
+		tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
+		tcp.getSessions().get(1).sendMessage(" " + scorePlayer2);
 	}
 	
 	private void deleteEnemies() {
@@ -285,7 +291,6 @@ public class PlayScreen implements IObserver {
 		for (int i = 0; i < player1.getBullets().size(); i++) {
 			player1.getBullets().get(i).draw(app);
 			player1.getBullets().get(i).moveBullet();
-			System.out.println(player1.getBullets().size());
 		}
 
 		
@@ -300,9 +305,6 @@ public class PlayScreen implements IObserver {
 			player2.getBullets().get(i).draw(app);
 			player2.getBullets().get(i).moveBullet();
 		}
-
-		
-		
 	}
 	
 	private double distEntreObj(double x1, double x2, double y1, double y2) {
