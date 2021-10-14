@@ -13,7 +13,7 @@ public class GameOverScreen {
 	public GameOverScreen (PApplet app) {
 		
 		this.app = app;
-		background = app.loadImage("./data/Lost.png");
+		background = app.loadImage("./data/GameOver.png");
 	
 	}
 	

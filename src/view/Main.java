@@ -10,7 +10,6 @@ public class Main extends PApplet implements IObserver{
 	private ConnectionScreen connection;
 	private PlayScreen play;
 	private GameOverScreen gameOver;
-	private winningScreen win;
 	
 	//Variables
 	private int screen;
@@ -39,7 +38,6 @@ public class Main extends PApplet implements IObserver{
 		connection = new ConnectionScreen(this);
 		play = new PlayScreen(this);
 		gameOver = new GameOverScreen(this);
-		win = new winningScreen(this);
 		
 		//Variables
 		screen = 0;
