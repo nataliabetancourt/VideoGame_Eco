@@ -17,6 +17,7 @@ public class HardEnemy {
 	private PImage enemyHard;
 	
 	public HardEnemy (PApplet app, int x, int y) {
+		
 		this.app = app;
 		this.x = x;
 		this.y = y;

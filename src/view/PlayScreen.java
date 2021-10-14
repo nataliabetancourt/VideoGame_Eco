@@ -19,11 +19,11 @@ public class PlayScreen implements IObserver {
 	private PImage background, player1Img, player2Img;
 	private PFont font;
 	private int scorePlayer1, scorePlayer2, minutes, seconds;
-	private int timeCounter;
+	private int timeCounter, vulnerable;
 	private ArrayList<BasicEnemy> basicEnemies1, basicEnemies2;
 	private ArrayList<HardEnemy> hardEnemies1, hardEnemies2;
 	private Player player1, player2;
-	private boolean lost;
+	private boolean gameover;
 	private Gson gson;
 	
 	public PlayScreen (PApplet app) {
@@ -51,7 +51,8 @@ public class PlayScreen implements IObserver {
 		hardEnemies2 = new ArrayList<>();
 		
 		//Variables
-		lost = false;
+		gameover = false;
+		
 	}
 	
 	public void draw() {
@@ -67,12 +68,17 @@ public class PlayScreen implements IObserver {
 		createBasicEnemies();
 		drawBasicEnemies();
 		drawHardEnemies();
-		enemiesBorder();
+		//enemiesborder();
 		deleteEnemies();
+		impactHardEnemies();
 		
 		//Players
 		players();
 
+		if (vulnerable > 0) {
+			vulnerable--;
+		}
+		
 	}
 	
 	private void time(){
@@ -150,66 +156,93 @@ public class PlayScreen implements IObserver {
 			hardEnemies2.get(i).draw();
 			hardEnemies2.get(i).move();
 		}
-
+		
 	}
 	
-	private void enemiesBorder() {
+	private void impactHardEnemies() {
 		
+		for (int i = 0; i < hardEnemies1.size(); i++) {
+			
+			//cuando le dispara al player
+			for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
+			
+				double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(i).getY(), 
+						
+						player1.getY(), hardEnemies1.get(i).getBullets().get(i).getY());
+				
+				if (distance < 120 && hardEnemies1.get(i).getBullets().get(i).isVisible()) {
+					
+					if (vulnerable == 0) {
+						
+						gameover = true;
+						vulnerable = 60;
+						
+					}
+					
+				hardEnemies1.get(i).getBullets().get(i).setVisible(false);
+				
+				}
+			}
+		}
+	}
+	
+	/*private void enemiesborder() {
+		
+		if (seconds <= 20) {
+			
 		for (int i = 0; i < basicEnemies1.size(); i++) {
-		if (basicEnemies1.get(i).getY() > 700) {
-			lost = true;
-			basicEnemies1.remove(i);
+
+			if (basicEnemies1.get(i).getY() > 700) {
+				System.out.println("*");
+				gameover = true;
+				basicEnemies1.remove(i);
+			}
+
+		}
+		
+		for (int i = 0; i < basicEnemies2.size(); i++) {
+
+			if (basicEnemies2.get(i).getY() > 700) {
+				System.out.println("**");
+				gameover = true;
+				basicEnemies2.remove(i);
+			}
+
+		}
+		}
+		
+	}*/
+	
+	private void deleteEnemies() {
+		for (int i = 0; i < basicEnemies1.size(); i++) {
+			if (basicEnemies1.get(i).getY() > 700) {
+				gameover = true;
+				basicEnemies1.remove(i);
 			
 			}
 		}
 		
 		for (int i = 0; i < basicEnemies2.size(); i++) {
 			if (basicEnemies2.get(i).getY() > 700) {
-				lost = true;
+				gameover = true;
 				basicEnemies2.remove(i);
-				
+			
 			}
 		}
 		
 		for (int i = 0; i < hardEnemies1.size(); i++) {
-			if (hardEnemies1.get(i).getY() > 700) {
-				lost = true;
-				hardEnemies1.remove(i);
-				
-			}
-		}
-
-		for (int i = 0; i < hardEnemies2.size(); i++) {
-			if (hardEnemies2.get(i).getY() > 700) {
-				lost = true;
-				hardEnemies2.remove(i);
-				
-			}
-		}		
-	}
-	
-	private void deleteEnemies() {
-		for (int i = 0; i < basicEnemies1.size(); i++) {
 			if (basicEnemies1.get(i).getY() > 700) {
+				gameover = true;
 				basicEnemies1.remove(i);
-			}
-		}
-		
-		for (int i = 0; i < basicEnemies2.size(); i++) {
-			if (basicEnemies2.get(i).getY() > 700) {
-				basicEnemies2.remove(i);
-			}
-		}
-		
-		for (int i = 0; i < hardEnemies1.size(); i++) {
-			if (hardEnemies1.get(i).getY() > 700) {
-				hardEnemies1.remove(i);
+			
 			}
 		}
 
 		for (int i = 0; i < hardEnemies2.size(); i++) {
-			if (hardEnemies2.get(i).getY() > 700) {
-				hardEnemies2.remove(i);
+			if (basicEnemies2.get(i).getY() > 700) {
+				gameover = true;
+				basicEnemies2.remove(i);
+			
 			}
 		}
 	}
@@ -241,8 +274,24 @@ public class PlayScreen implements IObserver {
 			player2.getBullets().get(i).moveBullet();
 		}
 
+		
+		
 	}
 	
+	private double distEntreObj(double x1, double x2, double y1, double y2) {
+		return Math.sqrt((y2 - y1)*(y2 - y1) + (x2 - x1)*(x2 - x1));
+	}
+	
+	
+	
+	public boolean isGameover() {
+		return gameover;
+	}
+
+	public void setGameover(boolean gameover) {
+		this.gameover = gameover;
+	}
+
 	@Override
 	public void notifyMessage(Session session, String message) {
 		if (session.getID().equals("player0")) {

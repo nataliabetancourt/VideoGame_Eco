@@ -9,6 +9,7 @@ public class Main extends PApplet implements IObserver{
 	private InstructionScreen instructions;
 	private ConnectionScreen connection;
 	private PlayScreen play;
+	private GameOverScreen gameOver;
 	
 	//Variables
 	private int screen;
@@ -31,10 +32,12 @@ public class Main extends PApplet implements IObserver{
 		tcp = TCPLauncher.getInstance();
 		tcp.setObserver(this);
 		
+		//pantallas
 		start = new StartScreen(this);
 		instructions = new InstructionScreen(this);
 		connection = new ConnectionScreen(this);
 		play = new PlayScreen(this);
+		gameOver = new GameOverScreen(this);
 		
 		//Variables
 		screen = 0;
@@ -74,8 +77,19 @@ public class Main extends PApplet implements IObserver{
 		case 3:
 			play.draw();
 			break;
+		//game over screen
+		case 4:
+			gameOver.draw();
+			break;
 
 		}
+		
+		if (play.isGameover() == true) {
+			
+			screen = 4;
+			
+		}
+		
 	}
 	
 	private void pressButtons() {
@@ -98,6 +112,11 @@ public class Main extends PApplet implements IObserver{
 					screen = 3;
 			}
 			break;
+		case 4:
+			
+			if(mouseX > 554 && mouseX < 707 && mouseY > 440 && mouseY < 500) {
+				exit();
+			}
 		}
 	}
 
