@@ -111,16 +111,16 @@ public class PlayScreen implements IObserver {
 		int yTemp = -60;
 		
 		//Contador para crear enemigo cada cierto tiempo
-		app.frameRate(80);
+		app.frameRate(60);
 		
 		//Agregar enemigos basicos
-		if (app.frameCount%120 == 0 && basicEnemies1.size() < 4) {
+		if (app.frameCount%200 == 0 && basicEnemies1.size() < 4) {
 			basicEnemies1.add(new BasicEnemy(app, xTemp1, yTemp));
 			basicEnemies2.add(new BasicEnemy(app, xTemp2, yTemp));
 		}
 		
 		//Agregar enemigos que disparan		
-		if (app.frameCount%250 == 0 && hardEnemies1.size() == 0) {
+		if (app.frameCount%500 == 0 && hardEnemies1.size() < 3) {
 			hardEnemies1.add(new HardEnemy(app, xTemp1, yTemp));
 			hardEnemies2.add(new HardEnemy(app, xTemp2, yTemp));
 		}
