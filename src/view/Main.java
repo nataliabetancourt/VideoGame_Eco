@@ -84,7 +84,7 @@ public class Main extends PApplet implements IObserver{
 			gameOver.draw();
 			break;
 			
-			//game over screen
+		//winning screen
 		case 5:
 			win.draw();
 			break;		
