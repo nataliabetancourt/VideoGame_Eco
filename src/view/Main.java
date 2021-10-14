@@ -86,6 +86,7 @@ public class Main extends PApplet implements IObserver{
 		
 		if (play.isGameover() == true) {
 			screen = 4;
+			gameOver.setWinner(play.getWinner());
 		}
 		
 	}
@@ -112,7 +113,7 @@ public class Main extends PApplet implements IObserver{
 			break;
 		case 4:
 			
-			if(mouseX > 554 && mouseX < 707 && mouseY > 440 && mouseY < 500) {
+			if(mouseX > 499 && mouseX < 709 && mouseY > 470 && mouseY < 540) {
 				exit();
 			}
 		}

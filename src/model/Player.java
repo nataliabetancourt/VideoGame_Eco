@@ -39,7 +39,6 @@ public class Player {
 			break;
 		case "shoot":
 			createBullet();
-			System.out.println("disparo");
 			break;
 		case "no movement":
 			break;
