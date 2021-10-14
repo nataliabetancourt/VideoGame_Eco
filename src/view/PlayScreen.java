@@ -23,6 +23,7 @@ public class PlayScreen implements IObserver {
 	private ArrayList<BasicEnemy> basicEnemies1, basicEnemies2;
 	private ArrayList<HardEnemy> hardEnemies1, hardEnemies2;
 	private Player player1, player2;
+	private boolean lost;
 	private Gson gson;
 	
 	public PlayScreen (PApplet app) {
@@ -50,7 +51,7 @@ public class PlayScreen implements IObserver {
 		hardEnemies2 = new ArrayList<>();
 		
 		//Variables
-
+		lost = false;
 	}
 	
 	public void draw() {
@@ -66,6 +67,7 @@ public class PlayScreen implements IObserver {
 		createBasicEnemies();
 		drawBasicEnemies();
 		drawHardEnemies();
+		enemiesBorder();
 		deleteEnemies();
 		
 		//Players
@@ -149,6 +151,41 @@ public class PlayScreen implements IObserver {
 			hardEnemies2.get(i).move();
 		}
 
+	}
+	
+	private void enemiesBorder() {
+		
+		for (int i = 0; i < basicEnemies1.size(); i++) {
+		if (basicEnemies1.get(i).getY() > 700) {
+			lost = true;
+			basicEnemies1.remove(i);
+			
+			}
+		}
+		
+		for (int i = 0; i < basicEnemies2.size(); i++) {
+			if (basicEnemies2.get(i).getY() > 700) {
+				lost = true;
+				basicEnemies2.remove(i);
+				
+			}
+		}
+		
+		for (int i = 0; i < hardEnemies1.size(); i++) {
+			if (hardEnemies1.get(i).getY() > 700) {
+				lost = true;
+				hardEnemies1.remove(i);
+				
+			}
+		}
+
+		for (int i = 0; i < hardEnemies2.size(); i++) {
+			if (hardEnemies2.get(i).getY() > 700) {
+				lost = true;
+				hardEnemies2.remove(i);
+				
+			}
+		}		
 	}
 	
 	private void deleteEnemies() {
