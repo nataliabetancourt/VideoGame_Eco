@@ -10,6 +10,7 @@ public class Main extends PApplet implements IObserver{
 	private ConnectionScreen connection;
 	private PlayScreen play;
 	private GameOverScreen gameOver;
+	private winningScreen win;
 	
 	//Variables
 	private int screen;
@@ -38,6 +39,7 @@ public class Main extends PApplet implements IObserver{
 		connection = new ConnectionScreen(this);
 		play = new PlayScreen(this);
 		gameOver = new GameOverScreen(this);
+		win = new winningScreen(this);
 		
 		//Variables
 		screen = 0;
@@ -81,12 +83,21 @@ public class Main extends PApplet implements IObserver{
 		case 4:
 			gameOver.draw();
 			break;
+			
+			//game over screen
+		case 5:
+			win.draw();
+			break;		
 
 		}
 		
 		if (play.isGameover() == true) {
 			
 			screen = 4;
+			
+		}else if(play.isGameover() == false) {
+			
+			screen = 5;
 			
 		}
 		

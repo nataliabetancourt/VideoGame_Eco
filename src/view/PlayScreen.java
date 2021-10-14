@@ -68,7 +68,6 @@ public class PlayScreen implements IObserver {
 		createBasicEnemies();
 		drawBasicEnemies();
 		drawHardEnemies();
-		//enemiesborder();
 		deleteEnemies();
 		impactHardEnemies();
 		
@@ -163,7 +162,7 @@ public class PlayScreen implements IObserver {
 		
 		for (int i = 0; i < hardEnemies1.size(); i++) {
 			
-			//cuando le dispara al player
+			//cuando el enemigo le dispara al player
 			for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
 			
 				double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(i).getY(), 
@@ -173,7 +172,7 @@ public class PlayScreen implements IObserver {
 				if (distance < 120 && hardEnemies1.get(i).getBullets().get(i).isVisible()) {
 					
 					if (vulnerable == 0) {
-						
+						//aqui va la resta del score del player
 						gameover = true;
 						vulnerable = 60;
 						
@@ -185,33 +184,6 @@ public class PlayScreen implements IObserver {
 			}
 		}
 	}
-	
-	/*private void enemiesborder() {
-		
-		if (seconds <= 20) {
-			
-		for (int i = 0; i < basicEnemies1.size(); i++) {
-
-			if (basicEnemies1.get(i).getY() > 700) {
-				System.out.println("*");
-				gameover = true;
-				basicEnemies1.remove(i);
-			}
-
-		}
-		
-		for (int i = 0; i < basicEnemies2.size(); i++) {
-
-			if (basicEnemies2.get(i).getY() > 700) {
-				System.out.println("**");
-				gameover = true;
-				basicEnemies2.remove(i);
-			}
-
-		}
-		}
-		
-	}*/
 	
 	private void deleteEnemies() {
 		for (int i = 0; i < basicEnemies1.size(); i++) {
