@@ -30,7 +30,7 @@ public class HardEnemy {
 		//ArrayList
 		bullets = new ArrayList<>();
 
-		//Imagen
+		//Image
 		enemyHard = app.loadImage("./data/hardENEMY.png");
 	}
 	
