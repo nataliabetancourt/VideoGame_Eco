@@ -9,7 +9,7 @@ import processing.core.PImage;
 public class Player {
 	
 	private int x, y, width, height;
-	private String action;
+	private String action, score;
 	private int coolDown, speed;
 	private ArrayList<Bullet> bullets;
 	
@@ -22,12 +22,14 @@ public class Player {
 		this.height = 115;
 		this.action = action;
 		
+		
 		//array
 		bullets = new ArrayList <>();
 		
 	}
 	
 	public void move() {
+		
 		switch (action) {
 		case "left":
 			x-=speed;
@@ -60,7 +62,7 @@ public class Player {
 	}
 	
 	public void eliminateBullet() {
-		for (int i = 0; i < bullets.size(); i++) {
+		for ( int i = 0; i < bullets.size(); i++) {
 			if (bullets.get(i).getY() < 0) {
 				bullets.remove(i);
 			}
@@ -91,7 +93,15 @@ public class Player {
 		return height;
 	}
     
-    public ArrayList<Bullet> getBullets() {
+    public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
+	public ArrayList<Bullet> getBullets() {
 		return bullets;
 	}
 
