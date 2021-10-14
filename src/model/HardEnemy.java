@@ -25,12 +25,12 @@ public class HardEnemy {
 		this.width = 113;
 		this.height = 118;
 		this.visible = true;
-		this.points = 10;
+		this.points = 20;
 		
 		//ArrayList
 		bullets = new ArrayList<>();
 
-		//Imagen
+		//Image
 		enemyHard = app.loadImage("./data/hardENEMY.png");
 	}
 	
@@ -51,7 +51,7 @@ public class HardEnemy {
 	}
 	
 	public void createBullet() {
-		if (app.frameCount%300 == 0) {
+		if (app.frameCount%300 == 0 && visible) {
 			Bullet bullet = new Bullet(x, y);
 			bullets.add(bullet);
 		}

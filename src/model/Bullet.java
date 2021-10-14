@@ -41,6 +41,10 @@ public class Bullet {
 		this.visible = visible;
 	}
 	
+	public int getX() {
+		return x;
+	}
+	
 	public int getY() {
 		return y;
 	}

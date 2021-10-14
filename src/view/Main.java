@@ -92,10 +92,14 @@ public class Main extends PApplet implements IObserver{
 		}
 		
 		if (play.isGameover() == true) {
-			
 			screen = 4;
-			
 		}
+
+		/*else if(play.isGameover() == false) {
+			
+			screen = 5;
+			
+		}*/
 		
 	}
 	
