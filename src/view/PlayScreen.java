@@ -172,8 +172,12 @@ public class PlayScreen implements IObserver {
 				if (distance < 120 && hardEnemies1.get(i).getBullets().get(i).isVisible()) {
 					
 					if (vulnerable == 0) {
-						//aqui va la resta del score del player
-						gameover = true;
+						//puede restar score
+						//resta del score del player
+						scorePlayer1 += hardEnemies1.get(i).getPoints();
+						scorePlayer2 += hardEnemies2.get(i).getPoints();
+						//o puede solo hacer gameover
+						//gameover = true;
 						vulnerable = 60;
 						
 					}

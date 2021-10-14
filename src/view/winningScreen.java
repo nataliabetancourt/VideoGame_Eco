@@ -9,9 +9,6 @@ public class winningScreen {
 
 	private PApplet app;	 
 	private PImage background;
-	/*private PFont font;
-	private int scorePlayer1, scorePlayer2, minutes, seconds;
-	private int timeCounter;*/
 	
 	public winningScreen (PApplet app) {
 		

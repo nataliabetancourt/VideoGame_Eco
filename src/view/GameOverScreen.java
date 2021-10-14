@@ -9,15 +9,11 @@ public class GameOverScreen {
 
 	private PApplet app;	 
 	private PImage background;
-	/*private PFont font;
-	private int scorePlayer1, scorePlayer2, minutes, seconds;
-	private int timeCounter;*/
 	
 	public GameOverScreen (PApplet app) {
 		
 		this.app = app;
 		background = app.loadImage("./data/Lost.png");
-		//font = app.createFont("./data/Poppins-Bold.ttf", 24);		
 	
 	}
 	
