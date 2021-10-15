@@ -17,7 +17,7 @@ public class Bullet {
 	}
 	
 	public void draw(PApplet app) {
-		if (visible == true) {
+		if (this.visible == true) {
 			app.fill (255);
 			app.ellipse (x, y, 20, 20);
 		}

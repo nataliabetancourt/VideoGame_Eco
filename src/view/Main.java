@@ -85,8 +85,9 @@ public class Main extends PApplet implements IObserver{
 		}
 		
 		if (play.isGameover() == true) {
-			screen = 4;
+			
 			gameOver.setWinner(play.getWinner());
+			screen = 4;
 		}
 		
 	}
