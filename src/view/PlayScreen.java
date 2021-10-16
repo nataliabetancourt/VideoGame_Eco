@@ -310,6 +310,11 @@ public class PlayScreen implements IObserver {
 	private void deleteEnemies() {
 		// Borrar enemigos cuando pasan el borde inferior y hacer el gameover
 		for (int i = 0; i < basicEnemies1.size(); i++) {
+			//Borrar enemigos cuando cruzan el borde, a pesar de ser invisibles
+			if(basicEnemies1.get(i).getY() > 700 + basicEnemies1.get(i).getHeight() && basicEnemies1.get(i).isVisible() == false) {
+				basicEnemies1.remove(i);
+			}
+			
 			if (basicEnemies1.get(i).getY() > 700 + basicEnemies1.get(i).getHeight() && basicEnemies1.get(i).isVisible()) {
 				gameover = true;
 				basicEnemies1.remove(i);
@@ -317,6 +322,11 @@ public class PlayScreen implements IObserver {
 		}
 
 		for (int i = 0; i < basicEnemies2.size(); i++) {
+			//Borrar enemigos cuando cruzan el borde, a pesar de ser invisibles
+			if(basicEnemies2.get(i).getY() > 700 + basicEnemies2.get(i).getHeight() && basicEnemies2.get(i).isVisible() == false) {
+				basicEnemies2.remove(i);
+			}
+			
 			if (basicEnemies2.get(i).getY() > 700 + basicEnemies2.get(i).getHeight() && basicEnemies2.get(i).isVisible()) {
 				gameover = true;
 				basicEnemies2.remove(i);
@@ -324,6 +334,11 @@ public class PlayScreen implements IObserver {
 		}
 
 		for (int i = 0; i < hardEnemies1.size(); i++) {
+			//Borrar enemigos cuando cruzan el borde, a pesar de ser invisibles
+			if(hardEnemies1.get(i).getY() > 700 + hardEnemies1.get(i).getHeight() && hardEnemies1.get(i).isVisible() == false) {
+				hardEnemies1.remove(i);
+			}
+			
 			if (hardEnemies1.get(i).getY() > 700 + hardEnemies1.get(i).getHeight() && hardEnemies1.get(i).isVisible()) {
 				gameover = true;
 				hardEnemies1.remove(i);
@@ -331,11 +346,19 @@ public class PlayScreen implements IObserver {
 		}
 
 		for (int i = 0; i < hardEnemies2.size(); i++) {
+			//Borrar enemigos cuando cruzan el borde, a pesar de ser invisibles
+			if(hardEnemies2.get(i).getY() > 700 + hardEnemies2.get(i).getHeight() && basicEnemies2.get(i).isVisible() == false) {
+				hardEnemies2.remove(i);
+			}
+			
 			if (hardEnemies2.get(i).getY() > 700 + hardEnemies2.get(i).getHeight() && hardEnemies2.get(i).isVisible()) {
 				gameover = true;
 				hardEnemies2.remove(i);
 			}
 		}
+		
+		
+		
 	}
 
 	private void players() {
