@@ -21,8 +21,11 @@ public class ConnectionScreen {
 	}
 	
 	public void draw() {
+		//Dibujar la pantalla
 		app.imageMode(PConstants.CORNER);
 		app.image(background, 0, 0, 1200, 700);
+		
+		//Validar la conexion de todos los jugadores antes de dejar seguir
 		if (connected == false) {
 			app.fill(255, 240, 243);
 			app.noStroke();

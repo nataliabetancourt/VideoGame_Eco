@@ -32,9 +32,11 @@ public class TCPLauncher extends Thread{
 	private void initCom(){
 		try {
 			
+			//Crear el server socket para la conexion
 			System.out.println("Iniciando servidor");
 			server = new ServerSocket(9000);
 			
+			//Crear el limite de jugadores que se pueden conectar para la creacion de sessiones
 			while(sessions.size() < 2) {
 				System.out.println("Esperando clientes");
 				Socket socket = server.accept(); 

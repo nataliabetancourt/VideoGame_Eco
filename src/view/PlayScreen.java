@@ -75,7 +75,7 @@ public class PlayScreen implements IObserver {
 		// Players
 		players();
 		impactPlayers();
-		
+
 		whenGameover();
 
 		if (vulnerable > 0) {
@@ -86,11 +86,14 @@ public class PlayScreen implements IObserver {
 
 	private void time() {
 		timeCounter++;
+
+		// Contador para los segundos
 		if (timeCounter == 50) {
 			seconds++;
 			timeCounter = 0;
 		}
 
+		// Contador para los minutos
 		if (seconds == 60) {
 			minutes++;
 			seconds = 0;
@@ -112,21 +115,17 @@ public class PlayScreen implements IObserver {
 		app.textFont(font);
 		app.text(scorePlayer1, 435, 47);
 		app.text(scorePlayer2, 744, 47);
-		
-		if(scorePlayer1 < 0 ) {
-			
+
+		// No permitir que el score este por debajo de 0
+		if (scorePlayer1 < 0) {
 			scorePlayer1 = 0;
-			
 		}
-		
-		if(scorePlayer2 < 0) {
-			
+
+		if (scorePlayer2 < 0) {
 			scorePlayer2 = 0;
-			
 		}
-		
+
 	}
-	
 
 	private void createEnemies() {
 		// Random para las posiciones de los enemigos
@@ -137,7 +136,8 @@ public class PlayScreen implements IObserver {
 		// Contador para crear enemigo cada cierto tiempo
 		app.frameRate(60);
 
-		// Agregar enemigos basicos
+		// Agregar enemigos basicos (como se agregan al mismo tiempo, el tamaño de las
+		// listas son iguales)
 		if (app.frameCount % 200 == 0 && basicEnemies1.size() < 4) {
 			basicEnemies1.add(new BasicEnemy(app, xTemp1, yTemp));
 			basicEnemies2.add(new BasicEnemy(app, xTemp2, yTemp));
@@ -151,6 +151,7 @@ public class PlayScreen implements IObserver {
 	}
 
 	private void drawBasicEnemies() {
+		// Dibujar los enemigos basicos de cada jugador
 		for (int i = 0; i < basicEnemies1.size(); i++) {
 			basicEnemies1.get(i).draw();
 			basicEnemies1.get(i).move();
@@ -163,6 +164,7 @@ public class PlayScreen implements IObserver {
 	}
 
 	private void drawHardEnemies() {
+		// Dibujar los enemigos dificiles de cada jugador
 		for (int i = 0; i < hardEnemies1.size(); i++) {
 			hardEnemies1.get(i).draw();
 			hardEnemies1.get(i).move();
@@ -176,94 +178,81 @@ public class PlayScreen implements IObserver {
 	}
 
 	private void impactHardEnemies() {
-		// cuando el enemigo le dispara al player 1
-		for (int i = 0; i < hardEnemies1.size(); i++) {
-			for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
+		//Bajo esta condicion para no afectar el score 
+		if (gameover == false) {
+			// cuando el enemigo le dispara al player 1
+			for (int i = 0; i < hardEnemies1.size(); i++) {
+				for (int j = 0; j < hardEnemies1.get(i).getBullets().size(); j++) {
 
-				double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(j).getY(),
-						player1.getY(), hardEnemies1.get(i).getBullets().get(j).getY());
+					double distance = distEntreObj(player1.getX(), hardEnemies1.get(i).getBullets().get(j).getY(),
+							player1.getY(), hardEnemies1.get(i).getBullets().get(j).getY());
 
-				if (vulnerable == 0) {
-					// resta del score del player
-					scorePlayer1 -= hardEnemies1.get(i).getPoints();
-					scorePlayer2 -= hardEnemies2.get(i).getPoints();
+					if (distance < 120 && hardEnemies1.get(i).getBullets().get(j).isVisible()
+							&& hardEnemies1.get(i).isVisible()) {
 
-					vulnerable = 60;
-
-					if (distance < 120 && hardEnemies1.get(i).getBullets().get(j).isVisible()) {
-
-						if (distance < 120 && hardEnemies1.get(i).getBullets().get(j).isVisible()
-								&& hardEnemies1.get(i).isVisible()) {
-
-							if (vulnerable == 0) {
-								scorePlayer1 -= hardEnemies1.get(i).getPoints();
-								vulnerable = 60;
-
-							}
-
-							hardEnemies1.get(i).getBullets().get(j).setVisible(false);
-							hardEnemies1.get(i).getBullets().remove(j);
-
-							// Enviar mensaje de score
-							tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
+						if (vulnerable == 0) {
+							scorePlayer1 -= hardEnemies1.get(i).getPoints();
+							vulnerable = 60;
 
 						}
+
+						hardEnemies1.get(i).getBullets().get(j).setVisible(false);
+						hardEnemies1.get(i).getBullets().remove(j);
+
+						// Enviar mensaje de score
+						tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
 					}
 				}
-
 			}
-		}
 
-		// cuando el enemigo le dispara al player 2
-		for (int i = 0; i < hardEnemies2.size(); i++) {
-			for (int j = 0; j < hardEnemies2.get(i).getBullets().size(); j++) {
+			// cuando el enemigo le dispara al player 2
+			for (int i = 0; i < hardEnemies2.size(); i++) {
+				for (int j = 0; j < hardEnemies2.get(i).getBullets().size(); j++) {
 
-				double distance = distEntreObj(player2.getX(), hardEnemies2.get(i).getBullets().get(j).getY(),
-						player2.getY(), hardEnemies2.get(i).getBullets().get(j).getY());
+					double distance = distEntreObj(player2.getX(), hardEnemies2.get(i).getBullets().get(j).getY(),
+							player2.getY(), hardEnemies2.get(i).getBullets().get(j).getY());
 
-				if (distance < 120 && hardEnemies2.get(i).getBullets().get(j).isVisible()
-						&& hardEnemies2.get(i).isVisible()) {
-					if (vulnerable == 0) {
-						scorePlayer2 -= hardEnemies2.get(i).getPoints();
-						vulnerable = 60;
+					if (distance < 120 && hardEnemies2.get(i).getBullets().get(j).isVisible()
+							&& hardEnemies2.get(i).isVisible()) {
+						if (vulnerable == 0) {
+							scorePlayer2 -= hardEnemies2.get(i).getPoints();
+							vulnerable = 60;
+
+						}
+
+						hardEnemies2.get(i).getBullets().get(j).setVisible(false);
+						hardEnemies2.get(i).getBullets().remove(j);
+
+						// Enviar mensaje de score
+						tcp.getSessions().get(1).sendMessage(" " + scorePlayer2);
 
 					}
-
-					hardEnemies2.get(i).getBullets().get(j).setVisible(false);
-					hardEnemies2.get(i).getBullets().remove(j);
-
-					// Enviar mensaje de score
-					tcp.getSessions().get(0).sendMessage(" " + scorePlayer2);
-
 				}
 			}
 		}
-
 	}
 
 	private void impactPlayers() {
+		//Bajo esta condicion para no afectar el score 
+		if (gameover == false) {
+			// Player 1 cuando le dispara al enemigo basico
+			for (int i = 0; i < player1.getBullets().size(); i++) {
+				for (int j = 0; j < basicEnemies1.size(); j++) {
 
-		// Player 1 cuando le dispara al enemigo basico
-		for (int i = 0; i < player1.getBullets().size(); i++) {
-			for (int j = 0; j < basicEnemies1.size(); j++) {
-
-				if (app.dist(player1.getBullets().get(i).getX(), player1.getBullets().get(i).getY(),
-						basicEnemies1.get(j).getX(), basicEnemies1.get(j).getY()) < basicEnemies1.get(j).getWidth() / 2
-						&& player1.getBullets().get(i).isVisible() && basicEnemies1.get(j).isVisible()) {
-					System.out.println("si se dispara");
-					scorePlayer1 += basicEnemies1.get(j).getPoints();
-					basicEnemies1.get(j).setVisible(false);
-					// Daño de las balas
-
-					player1.getBullets().get(i).setVisible(false);
-					System.out.println(player1.getBullets().get(i).isVisible());
-					// Enviar mensaje de score
-					tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
+					if (app.dist(player1.getBullets().get(i).getX(), player1.getBullets().get(i).getY(),
+							basicEnemies1.get(j).getX(), basicEnemies1.get(j).getY()) < basicEnemies1.get(j).getWidth() / 2
+							&& player1.getBullets().get(i).isVisible() && basicEnemies1.get(j).isVisible()) {
+						scorePlayer1 += basicEnemies1.get(j).getPoints();
+						basicEnemies1.get(j).setVisible(false);
+						// Daño de las balas
+						player1.getBullets().get(i).setVisible(false);
+						// Enviar mensaje de score
+						tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
+					}
 				}
-			}
 
-			// Player 1 cuando le dispara al enemigo dificil
-			for (int j = 0; j < hardEnemies1.size(); j++) {
+				// Player 1 cuando le dispara al enemigo dificil
+				for (int j = 0; j < hardEnemies1.size(); j++) {
 
 					if (app.dist(player1.getBullets().get(i).getX(), player1.getBullets().get(i).getY(),
 							hardEnemies1.get(j).getX(), hardEnemies1.get(j).getY()) < hardEnemies1.get(j).getWidth() / 2
@@ -277,102 +266,74 @@ public class PlayScreen implements IObserver {
 						tcp.getSessions().get(0).sendMessage(" " + scorePlayer1);
 					}
 				}
-		}
-		
-		// Player 2 cuando le dispara al enemigo basico
-		for (int i = 0; i < player2.getBullets().size(); i++) {
-			
-			for (int j = 0; j < basicEnemies2.size(); j++) {
-			
-				if (app.dist(player2.getBullets().get(i).getX(), player2.getBullets().get(i).getY(),
-						basicEnemies2.get(j).getX(), basicEnemies2.get(j).getY()) < basicEnemies2.get(j).getWidth() / 2
-						&& player2.getBullets().get(i).isVisible() && basicEnemies2.get(j).isVisible()) {
-					scorePlayer2 += basicEnemies2.get(j).getPoints();
-					basicEnemies2.get(j).setVisible(false);
-					// Daño de las balas
-
-					player2.getBullets().get(i).setVisible(false);
-
-					// Enviar mensaje de score
-					tcp.getSessions().get(0).sendMessage(" " + scorePlayer2);
-				}
 			}
 
-			// Player 2 cuando le dispara al enemigo dificil
-			for (int j = 0; j < hardEnemies2.size(); j++) {
-				if (app.dist(player2.getBullets().get(i).getX(), player2.getBullets().get(i).getY(),
-						hardEnemies2.get(j).getX(), hardEnemies2.get(j).getY()) < hardEnemies2.get(j).getWidth() / 2
-						&& player2.getBullets().get(i).isVisible() && hardEnemies2.get(j).isVisible()) {
-					scorePlayer2 += hardEnemies2.get(j).getPoints();
-					hardEnemies2.get(j).setVisible(false);
-					// Daño de las balas
+			// Player 2 cuando le dispara al enemigo basico
+			for (int i = 0; i < player2.getBullets().size(); i++) {
 
-					player2.getBullets().get(i).setVisible(false);
+				for (int j = 0; j < basicEnemies2.size(); j++) {
 
-					// Enviar mensaje de score
-					tcp.getSessions().get(0).sendMessage(" " + scorePlayer2);
+					if (app.dist(player2.getBullets().get(i).getX(), player2.getBullets().get(i).getY(),
+							basicEnemies2.get(j).getX(), basicEnemies2.get(j).getY()) < basicEnemies2.get(j).getWidth() / 2
+							&& player2.getBullets().get(i).isVisible() && basicEnemies2.get(j).isVisible()) {
+						scorePlayer2 += basicEnemies2.get(j).getPoints();
+						basicEnemies2.get(j).setVisible(false);
+						// Daño de las balas
+
+						player2.getBullets().get(i).setVisible(false);
+
+						// Enviar mensaje de score
+						tcp.getSessions().get(1).sendMessage(" " + scorePlayer2);
+					}
 				}
-			}
-			
-		}
-			
 
+				// Player 2 cuando le dispara al enemigo dificil
+				for (int j = 0; j < hardEnemies2.size(); j++) {
+					if (app.dist(player2.getBullets().get(i).getX(), player2.getBullets().get(i).getY(),
+							hardEnemies2.get(j).getX(), hardEnemies2.get(j).getY()) < hardEnemies2.get(j).getWidth() / 2
+							&& player2.getBullets().get(i).isVisible() && hardEnemies2.get(j).isVisible()) {
+						scorePlayer2 += hardEnemies2.get(j).getPoints();
+						hardEnemies2.get(j).setVisible(false);
+						// Daño de las balas
+
+						player2.getBullets().get(i).setVisible(false);
+
+						// Enviar mensaje de score
+						tcp.getSessions().get(1).sendMessage(" " + scorePlayer2);
+					}
+				}
+
+			}
+		}
 	}
 
 	private void deleteEnemies() {
+		// Borrar enemigos cuando pasan el borde inferior y hacer el gameover
 		for (int i = 0; i < basicEnemies1.size(); i++) {
-
-			if (basicEnemies1.get(i).getY() > 700) {
+			if (basicEnemies1.get(i).getY() > 700 + basicEnemies1.get(i).getHeight() && basicEnemies1.get(i).isVisible()) {
 				gameover = true;
-
-				if (basicEnemies1.get(i).getY() > 750) {
-					 gameover = true;
-
-					basicEnemies1.remove(i);
-
-				}
+				basicEnemies1.remove(i);
 			}
 		}
 
 		for (int i = 0; i < basicEnemies2.size(); i++) {
-
-			if (basicEnemies2.get(i).getY() > 700) {
+			if (basicEnemies2.get(i).getY() > 700 + basicEnemies2.get(i).getHeight() && basicEnemies2.get(i).isVisible()) {
 				gameover = true;
-
-				if (basicEnemies2.get(i).getY() > 750) {
-					 gameover = true;
-
-					basicEnemies2.remove(i);
-
-				}
+				basicEnemies2.remove(i);
 			}
 		}
 
 		for (int i = 0; i < hardEnemies1.size(); i++) {
-
-			if (hardEnemies1.get(i).getY() > 700) {
+			if (hardEnemies1.get(i).getY() > 700 + hardEnemies1.get(i).getHeight() && hardEnemies1.get(i).isVisible()) {
 				gameover = true;
-
-				if (hardEnemies1.get(i).getY() > 750) {
-					 gameover = true;
-
-					hardEnemies1.remove(i);
-
-				}
+				hardEnemies1.remove(i);
 			}
 		}
 
 		for (int i = 0; i < hardEnemies2.size(); i++) {
-
-			if (hardEnemies2.get(i).getY() > 700) {
+			if (hardEnemies2.get(i).getY() > 700 + hardEnemies2.get(i).getHeight() && hardEnemies2.get(i).isVisible()) {
 				gameover = true;
-
-				if (hardEnemies2.get(i).getY() > 750) {
-					 gameover = true;
-
-					hardEnemies2.remove(i);
-
-				}
+				hardEnemies2.remove(i);
 			}
 		}
 	}
@@ -388,9 +349,6 @@ public class PlayScreen implements IObserver {
 		for (int i = 0; i < player1.getBullets().size(); i++) {
 			player1.getBullets().get(i).draw(app);
 			player1.getBullets().get(i).moveBullet();
-
-			// System.out.println(player1.getBullets().size());
-
 		}
 
 		// For player 2
@@ -403,24 +361,19 @@ public class PlayScreen implements IObserver {
 		for (int i = 0; i < player2.getBullets().size(); i++) {
 			player2.getBullets().get(i).draw(app);
 			player2.getBullets().get(i).moveBullet();
-
 		}
 
 	}
-	
-	public void whenGameover() {
+
+	private void whenGameover() {
+		// Determinar quien gano al final del juego
 		if (gameover) {
-			
 			if (scorePlayer1 < scorePlayer2) {
 				winner = "Ganaste Player 2";
-
 			} else if (scorePlayer1 > scorePlayer2) {
 				winner = "Ganaste Player 1";
-
-			}else {
-				
+			} else if (scorePlayer1 == scorePlayer2) {
 				winner = "Empate";
-
 			}
 		}
 	}
@@ -436,24 +389,26 @@ public class PlayScreen implements IObserver {
 	public void setGameover(boolean gameover) {
 		this.gameover = gameover;
 	}
-	
+
 	public String getWinner() {
 		return winner;
 	}
-	
 
 	@Override
 	public void notifyMessage(Session session, String message) {
-		if (session.getID().equals("player0")) {
+		// Segun el ID de la session, afectar el jugador correspondiente y hacerlo mover
+		if (tcp.getSessions().get(0).getID().equals(session.getID())) {
 
 			Player basePlayer = gson.fromJson(message, Player.class);
 			player1.setAction(basePlayer.getAction());
 			player1.move();
 
-		} else if (session.getID().equals("player1")) {
+		}
 
-			Player basePlayer = gson.fromJson(message, Player.class);
-			player2.setAction(basePlayer.getAction());
+		if (tcp.getSessions().get(1).getID().equals(session.getID())) {
+
+			Player basePlayer2 = gson.fromJson(message, Player.class);
+			player2.setAction(basePlayer2.getAction());
 			player2.move();
 
 		}

@@ -30,7 +30,7 @@ public class GameOverScreen {
 		app.textFont(font);
 		app.textAlign(PConstants.CENTER);
 		app.fill(80);
-		app.text(winner, 575, 430);
+		app.text(winner, 600, 430);
 		
 	}
 	

@@ -49,8 +49,10 @@ public class Session extends Thread{
 				() -> {
 					while(true) {
 						try {
-							String msg = bf.readLine(); //Stops program until there is a message
+							//Poner en un string el mensaje transmitido
+							String msg = bf.readLine(); 
 							
+							//Enviar el mensaje en el metodo del interfaz que se implementa en las clases
 							observer.notifyMessage(this, msg);
 
 						} catch (Exception e) {

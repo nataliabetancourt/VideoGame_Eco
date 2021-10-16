@@ -84,8 +84,9 @@ public class Main extends PApplet implements IObserver{
 
 		}
 		
+		//Realizar el cambio de pantalla cuando sea enviado el mensaje gameover
 		if (play.isGameover() == true) {
-			
+			//Enviar quien ganó de la clase de play a la clase game
 			gameOver.setWinner(play.getWinner());
 			screen = 4;
 		}
@@ -112,8 +113,8 @@ public class Main extends PApplet implements IObserver{
 					screen = 3;
 			}
 			break;
+		//Gameover screen
 		case 4:
-			
 			if(mouseX > 499 && mouseX < 709 && mouseY > 470 && mouseY < 540) {
 				exit();
 			}
